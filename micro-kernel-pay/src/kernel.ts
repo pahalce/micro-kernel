@@ -1,9 +1,12 @@
 /* ------------------------------------------------------------------
-   Minimal micro-kernel core
+   Minimal micro-kernel core  (plugin loader, command & gateway registry)
+   ESLint no-explicit-any 回避：unknown / Generics を使用
 ------------------------------------------------------------------- */
 
 import fs from "node:fs/promises";
 import path from "node:path";
+
+import type { PaymentGateway, PaymentRequest, PaymentResult } from "./types.js";
 
 /* ---------- 公開インタフェース ---------- */
 export interface EventBus {
@@ -18,20 +21,23 @@ export interface KernelAPI {
 		cmd: string,
 		fn: (...args: Args) => R,
 	): void;
+	registerGateway(gw: PaymentGateway): void;
 }
 
-/* ---------- 内部実装 ---------- */
+/* ---------- 内部実装 (EventBus) ---------- */
 
 class SimpleBus implements EventBus {
 	/** topic → Set<listener> */
 	#listeners = new Map<string, Set<(d: unknown) => void>>();
-	publish<T = unknown>(topic: string, data: T) {
-		for (const fn of this.#listeners.get(topic) ?? []) {
+	publish<T = unknown>(topic: string, data: T): void {
+		const listeners = this.#listeners.get(topic);
+		if (!listeners) return;
+		for (const fn of listeners) {
 			fn(data);
 		}
 	}
 
-	subscribe<T = unknown>(topic: string, fn: (d: T) => void) {
+	subscribe<T = unknown>(topic: string, fn: (d: T) => void): () => void {
 		const set =
 			this.#listeners.get(topic) ??
 			(() => {
@@ -40,42 +46,59 @@ class SimpleBus implements EventBus {
 				return s;
 			})();
 
-		// 型を unknown に“昇格”して内部保持
-		const typed = fn as (d: unknown) => void;
+		const typed = fn as (d: unknown) => void; // 型を unknown に昇格して保持
 		set.add(typed);
 
-		/* unsubscribe */
 		return () => {
 			set.delete(typed);
 		};
 	}
 }
 
+/* ---------- Kernel 本体 ---------- */
+
 export class Kernel implements KernelAPI {
 	bus = new SimpleBus();
 	logger = console;
 
-	/** コマンドレジストリ（可変長引数 & 戻り値任意） */
+	/* command registry (今回は使わないが拡張性のため残す) */
 	#commands = new Map<string, (...args: unknown[]) => unknown>();
 
 	registerCommand<Args extends unknown[] = [], R = unknown>(
 		cmd: string,
 		fn: (...args: Args) => R,
-	) {
+	): void {
 		if (this.#commands.has(cmd))
 			throw new Error(`command "${cmd}" already exists`);
-		// 型を unknown 向けに変換して保存
 		this.#commands.set(cmd, fn as (...args: unknown[]) => unknown);
 	}
 
-	async exec(cmd: string, ...args: unknown[]) {
+	async exec<R = unknown>(cmd: string, ...args: unknown[]): Promise<R> {
 		const fn = this.#commands.get(cmd);
 		if (!fn) throw new Error(`command "${cmd}" not found`);
-		return fn(...args);
+		return fn(...args) as R;
 	}
 
-	/** plugins ディレクトリ直下の *.ts / *.js / *.mjs / *.cjs を動的 import */
-	async loadPlugins(dir = path.resolve("plugins")) {
+	/* ---------------- Payment Gateway 部分 ---------------- */
+
+	#gateways = new Map<string, PaymentGateway>();
+
+	registerGateway(gw: PaymentGateway): void {
+		if (this.#gateways.has(gw.name))
+			throw new Error(`gateway "${gw.name}" already registered`);
+		this.#gateways.set(gw.name, gw);
+		this.logger.info(`💳  gateway registered: ${gw.name}`);
+	}
+
+	async pay(req: PaymentRequest): Promise<PaymentResult> {
+		const gw = this.#gateways.get(req.gateway);
+		if (!gw) return { ok: false, error: "unsupported gateway" };
+		return gw.charge(req);
+	}
+
+	/* ---------------- プラグインローダ -------------------- */
+
+	async loadPlugins(dir = path.resolve("plugins")): Promise<void> {
 		for (const file of await fs.readdir(dir)) {
 			if (!file.match(/\.(c?[jt]s|mjs)$/)) continue;
 

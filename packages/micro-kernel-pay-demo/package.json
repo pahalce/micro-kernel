@@ -1,0 +1,28 @@
+{
+  "name": "micro-kernel-pay-demo",
+  "version": "1.0.0",
+  "description": "Demo application for micro-kernel payment system",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "clean": "rm -rf dist node_modules"
+  },
+  "keywords": ["payment", "demo", "micro-kernel"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@types/node": "^22.15.3",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.14.1",
+    "hono": "^4.7.8",
+    "micro-kernel-pay": "workspace:*",
+    "micro-kernel-amazon-pay": "workspace:*"
+  }
+}

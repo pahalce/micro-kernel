@@ -24,6 +24,11 @@ export interface KernelAPI {
   registerGateway(gw: PaymentGateway): void;
 }
 
+export interface KernelOptions {
+  plugins?: unknown[]; // 外部プラグインの配列
+  pluginsDir?: string; // ローカルプラグインのディレクトリ
+}
+
 /* ---------- 内部実装 (EventBus) ---------- */
 
 class SimpleBus implements EventBus {
@@ -98,18 +103,84 @@ export class Kernel implements KernelAPI {
 
   /* ---------------- プラグインローダ -------------------- */
 
-  async loadPlugins(dir = path.resolve("plugins")) {
-    for (const file of await fs.readdir(dir)) {
-      if (!file.match(/\.(c?[jt]s|mjs)$/)) continue;
+  constructor(options: KernelOptions = {}) {
+    // 外部プラグインの初期化
+    if (options.plugins && options.plugins.length > 0) {
+      this.initExternalPlugins(options.plugins);
+    }
+  }
 
-      const mod: { default?: unknown } = await import(path.join(dir, file));
-      const plug = mod.default;
-      if (typeof plug === "function") {
-        (plug as (api: KernelAPI) => void)(this);
-        this.logger.info(`✅ loaded plugin: ${file}`);
+  // 外部プラグインの初期化
+  initExternalPlugins(plugins: unknown[]) {
+    for (const plugin of plugins) {
+      if (typeof plugin === "function") {
+        (plugin as (api: KernelAPI) => void)(this);
+        this.logger.info(
+          `✅ loaded external plugin: ${plugin.name || "anonymous"}`,
+        );
       } else {
-        this.logger.warn(`⚠️  plugin ${file} does not export default function`);
+        this.logger.warn("⚠️  external plugin does not export a function");
       }
     }
+  }
+
+  // ディレクトリが存在するかチェック、なければ作成
+  async ensureDirectoryExists(dir: string): Promise<boolean> {
+    try {
+      await fs.access(dir);
+      return true;
+    } catch (err) {
+      // ディレクトリが存在しない場合は作成
+      if ((err as NodeJS.ErrnoException).code === "ENOENT") {
+        try {
+          await fs.mkdir(dir, { recursive: true });
+          this.logger.info(`✅ Created plugins directory: ${dir}`);
+          return true;
+        } catch (mkdirErr) {
+          this.logger.warn(`⚠️ Failed to create directory ${dir}:`, mkdirErr);
+          return false;
+        }
+      }
+      return false;
+    }
+  }
+
+  // ローカルプラグインのロード
+  async loadLocalPlugins(dir = path.resolve("plugins")) {
+    try {
+      // ディレクトリを確認・作成
+      const exists = await this.ensureDirectoryExists(dir);
+      if (!exists) {
+        return;
+      }
+
+      const files = await fs.readdir(dir);
+      if (files.length === 0) {
+        this.logger.info(`ℹ️  No plugins found in directory: ${dir}`);
+        return;
+      }
+
+      for (const file of files) {
+        if (!file.match(/\.(c?[jt]s|mjs)$/)) continue;
+
+        const mod: { default?: unknown } = await import(path.join(dir, file));
+        const plug = mod.default;
+        if (typeof plug === "function") {
+          (plug as (api: KernelAPI) => void)(this);
+          this.logger.info(`✅ loaded local plugin: ${file}`);
+        } else {
+          this.logger.warn(
+            `⚠️  plugin ${file} does not export default function`,
+          );
+        }
+      }
+    } catch (err) {
+      this.logger.warn(`⚠️ Failed to load plugins from ${dir}:`, err);
+    }
+  }
+
+  // 後方互換性のために維持
+  async loadPlugins(dir = path.resolve("plugins")) {
+    return this.loadLocalPlugins(dir);
   }
 }

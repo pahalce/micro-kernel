@@ -8,8 +8,15 @@ import { Kernel } from "./kernel.js";
 import type { PaymentRequest } from "./types.js";
 
 /* --- カーネル起動 & プラグインロード (top-level await) --- */
+// 外部プラグインの配列を受け取れるように修正
+// 初期化時に外部プラグインを渡す場合は以下のように実装:
+// const kernel = new Kernel({ plugins: [externalPlugin1, externalPlugin2] });
 const kernel = new Kernel();
-await kernel.loadPlugins(); // Stripe & PayPal が登録される
+// ローカルプラグインをロード
+await kernel.loadLocalPlugins();
+
+/* --- 外部からの利用のためにカーネルをエクスポート --- */
+export { Kernel };
 
 /* --- Hono アプリ定義 --- */
 const app = new Hono();

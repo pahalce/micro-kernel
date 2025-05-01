@@ -2,11 +2,7 @@
    Stripe 決済プラグイン（簡易ダミー SDK で再現）
 ------------------------------------------------------------------- */
 import type { KernelAPI } from "../kernel.js";
-import type {
-  PaymentGateway,
-  PaymentRequest,
-  PaymentResult,
-} from "../types.js";
+import type { PaymentGateway, PaymentRequest } from "../types.js";
 
 /* 疑似 Stripe SDK */
 async function fakeStripeCharge(req: PaymentRequest) {

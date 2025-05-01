@@ -1,6 +1,6 @@
 import { describe, test, expect, vi, beforeEach } from "vitest";
-import { Kernel } from "micro-kernel-pay-sdk";
-import type { PaymentRequest } from "micro-kernel-pay-sdk";
+import { Kernel } from "@micro-kernel/pay-sdk";
+import type { PaymentRequest } from "@micro-kernel/pay-sdk";
 import amazonPayPluginLoader from "../src/index.js";
 
 describe("Amazon Pay Plugin", () => {

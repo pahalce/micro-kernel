@@ -1,2 +1,4 @@
 packages:
-  - 'packages/*' 
+  - 'packages/sdk/**'
+  - 'packages/plugins/**'
+  - 'demos/**' 

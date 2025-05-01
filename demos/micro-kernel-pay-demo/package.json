@@ -1,5 +1,5 @@
 {
-  "name": "micro-kernel-pay-demo",
+  "name": "@micro-kernel/pay-demo",
   "version": "1.0.0",
   "description": "マイクロカーネル決済システムのデモアプリケーション",
   "main": "dist/index.js",
@@ -25,7 +25,7 @@
   "dependencies": {
     "@hono/node-server": "^1.14.1",
     "hono": "^4.7.8",
-    "micro-kernel-pay-sdk": "workspace:*",
-    "micro-kernel-amazon-pay": "workspace:*"
+    "@micro-kernel/pay-sdk": "workspace:*",
+    "@micro-kernel/amazon-pay-plugin": "workspace:*"
   }
 }

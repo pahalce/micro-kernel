@@ -178,9 +178,4 @@ export class Kernel implements KernelAPI {
       this.logger.warn(`⚠️ Failed to load plugins from ${dir}:`, err);
     }
   }
-
-  // 後方互換性のために維持
-  async loadPlugins(dir = path.resolve("plugins")) {
-    return this.loadLocalPlugins(dir);
-  }
 }

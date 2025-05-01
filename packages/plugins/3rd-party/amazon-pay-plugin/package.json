@@ -1,5 +1,5 @@
 {
-  "name": "micro-kernel-amazon-pay",
+  "name": "@micro-kernel/amazon-pay-plugin",
   "version": "1.0.0",
   "description": "Amazon Payプラグイン - マイクロカーネル決済SDKの拡張",
   "type": "module",
@@ -18,7 +18,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "micro-kernel-pay-sdk": "workspace:*"
+    "@micro-kernel/pay-sdk": "workspace:*"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",

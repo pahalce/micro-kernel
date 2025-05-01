@@ -15,39 +15,20 @@ importers:
         specifier: ^2.5.2
         version: 2.5.2
 
-  packages/micro-kernel-amazon-pay:
-    dependencies:
-      micro-kernel-pay-sdk:
-        specifier: workspace:*
-        version: link:../micro-kernel-pay-sdk
-    devDependencies:
-      '@biomejs/biome':
-        specifier: 1.9.4
-        version: 1.9.4
-      '@types/node':
-        specifier: ^22.15.3
-        version: 22.15.3
-      typescript:
-        specifier: ^5.8.3
-        version: 5.8.3
-      vitest:
-        specifier: ^1.6.1
-        version: 1.6.1(@types/node@22.15.3)
-
-  packages/micro-kernel-pay-demo:
+  demos/micro-kernel-pay-demo:
     dependencies:
       '@hono/node-server':
         specifier: ^1.14.1
         version: 1.14.1(hono@4.7.8)
+      '@micro-kernel/amazon-pay-plugin':
+        specifier: workspace:*
+        version: link:../../packages/plugins/3rd-party/amazon-pay-plugin
+      '@micro-kernel/pay-sdk':
+        specifier: workspace:*
+        version: link:../../packages/sdk/pay-sdk
       hono:
         specifier: ^4.7.8
         version: 4.7.8
-      micro-kernel-amazon-pay:
-        specifier: workspace:*
-        version: link:../micro-kernel-amazon-pay
-      micro-kernel-pay-sdk:
-        specifier: workspace:*
-        version: link:../micro-kernel-pay-sdk
     devDependencies:
       '@biomejs/biome':
         specifier: 1.9.4
@@ -65,7 +46,26 @@ importers:
         specifier: ^1.6.1
         version: 1.6.1(@types/node@22.15.3)
 
-  packages/micro-kernel-pay-sdk:
+  packages/plugins/3rd-party/amazon-pay-plugin:
+    dependencies:
+      '@micro-kernel/pay-sdk':
+        specifier: workspace:*
+        version: link:../../../sdk/pay-sdk
+    devDependencies:
+      '@biomejs/biome':
+        specifier: 1.9.4
+        version: 1.9.4
+      '@types/node':
+        specifier: ^22.15.3
+        version: 22.15.3
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
+      vitest:
+        specifier: ^1.6.1
+        version: 1.6.1(@types/node@22.15.3)
+
+  packages/sdk/pay-sdk:
     devDependencies:
       '@biomejs/biome':
         specifier: 1.9.4

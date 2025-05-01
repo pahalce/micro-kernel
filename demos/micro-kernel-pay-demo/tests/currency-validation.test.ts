@@ -1,6 +1,6 @@
 import { describe, test, expect } from "vitest";
-import { Kernel } from "micro-kernel-pay-sdk";
-import type { PaymentGateway, PaymentRequest } from "micro-kernel-pay-sdk";
+import { Kernel } from "@micro-kernel/pay-sdk";
+import type { PaymentGateway, PaymentRequest } from "@micro-kernel/pay-sdk";
 
 // カスタムプラグインでのバリデーション実装サンプル
 describe("通貨バリデーション", () => {

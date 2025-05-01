@@ -4,9 +4,9 @@
 
 import { Hono } from "hono";
 import { serve } from "@hono/node-server";
-import { Kernel, type PaymentRequest } from "micro-kernel-pay-sdk";
-import amazonPayPlugin from "micro-kernel-amazon-pay";
-import { paypalPlugin, stripePlugin } from "micro-kernel-pay-sdk/plugins";
+import { Kernel, type PaymentRequest } from "@micro-kernel/pay-sdk";
+import amazonPayPlugin from "@micro-kernel/amazon-pay-plugin";
+import { paypalPlugin, stripePlugin } from "@micro-kernel/pay-sdk/plugins";
 
 /* --- カーネル起動 & プラグインロード --- */
 // 複数のプラグインを渡す方法

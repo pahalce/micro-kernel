@@ -5,8 +5,7 @@ import type {
   Kernel,
   PaymentGateway,
   PaymentRequest,
-  PaymentResult,
-} from "micro-kernel-pay-sdk";
+} from "@micro-kernel/pay-sdk";
 
 /* 疑似 Amazon Pay SDK */
 async function fakeAmazonPayCharge(req: PaymentRequest) {
@@ -18,7 +17,7 @@ async function fakeAmazonPayCharge(req: PaymentRequest) {
 const amazonPayPlugin: PaymentGateway = {
   name: "amazon-pay",
   currencies: ["USD", "JPY", "EUR"],
-  async charge(req) {
+  async charge(req: PaymentRequest) {
     try {
       const id = await fakeAmazonPayCharge(req);
       return { ok: true, txId: id };

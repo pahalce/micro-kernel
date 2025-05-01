@@ -1,11 +1,11 @@
 import { describe, test, expect, beforeAll, afterAll } from "vitest";
-import { Kernel } from "micro-kernel-pay-sdk";
-import type { PaymentRequest } from "micro-kernel-pay-sdk";
+import { Kernel } from "@micro-kernel/pay-sdk";
+import type { PaymentRequest } from "@micro-kernel/pay-sdk";
 
 // 標準プラグイン
-import { stripePlugin, paypalPlugin } from "micro-kernel-pay-sdk/plugins";
+import { stripePlugin, paypalPlugin } from "@micro-kernel/pay-sdk/plugins";
 // 外部プラグイン
-import amazonPayPlugin from "micro-kernel-amazon-pay";
+import amazonPayPlugin from "@micro-kernel/amazon-pay-plugin";
 
 describe("マイクロカーネル統合テスト", () => {
   let kernel: Kernel;

@@ -1,11 +1,11 @@
 import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
 import { Hono } from "hono";
-import { Kernel } from "micro-kernel-pay-sdk";
-import type { PaymentRequest } from "micro-kernel-pay-sdk";
+import { Kernel } from "@micro-kernel/pay-sdk";
+import type { PaymentRequest } from "@micro-kernel/pay-sdk";
 
 // 実際のプラグインをインポート
-import { stripePlugin, paypalPlugin } from "micro-kernel-pay-sdk/plugins";
-import amazonPayPlugin from "micro-kernel-amazon-pay";
+import { stripePlugin, paypalPlugin } from "@micro-kernel/pay-sdk/plugins";
+import amazonPayPlugin from "@micro-kernel/amazon-pay-plugin";
 
 // Honoアプリのテスト用に実際のアプリケーションコードを再現したバージョンを作成
 function createTestApp() {

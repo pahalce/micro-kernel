@@ -2,11 +2,7 @@
    PayPal 決済プラグイン（簡易ダミー実装）
 ------------------------------------------------------------------- */
 import type { KernelAPI } from "../kernel.js";
-import type {
-  PaymentGateway,
-  PaymentRequest,
-  PaymentResult,
-} from "../types.js";
+import type { PaymentGateway, PaymentRequest } from "../types.js";
 
 async function fakePaypalCharge(req: PaymentRequest) {
   // 実際は PayPal REST API 呼び出し

@@ -1,5 +1,5 @@
 {
-  "name": "micro-kernel-pay-sdk",
+  "name": "@micro-kernel/pay-sdk",
   "version": "1.0.0",
   "description": "マイクロカーネルアーキテクチャに基づく決済システムSDK",
   "main": "dist/src/index.js",

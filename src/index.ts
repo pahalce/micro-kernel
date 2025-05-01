@@ -2,13 +2,13 @@
    Public HTTP layer – Hono 版
 ------------------------------------------------------------------- */
 
-import { Hono } from "hono";
 import { serve } from "@hono/node-server";
+import { Hono } from "hono";
 import { Kernel } from "./kernel.js";
 
-/* --- カーネル起動 & プラグインロード（トップレベル await） --- */
+/* --- カーネル起動 & プラグインロード  --- */
 const kernel = new Kernel();
-await kernel.loadPlugins(); // ★ top-level await が働くポイント
+await kernel.loadPlugins();
 
 /* --- Hono アプリ定義 --- */
 const app = new Hono();

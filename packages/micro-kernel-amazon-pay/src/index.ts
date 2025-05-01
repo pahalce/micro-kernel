@@ -1,12 +1,12 @@
 /* ------------------------------------------------------------------
    Amazon Pay 決済プラグイン
 ------------------------------------------------------------------- */
-import type { KernelAPI } from "micro-kernel-pay/dist/src/kernel.js";
 import type {
+  Kernel,
   PaymentGateway,
   PaymentRequest,
   PaymentResult,
-} from "micro-kernel-pay/dist/src/types.js";
+} from "micro-kernel-pay-sdk";
 
 /* 疑似 Amazon Pay SDK */
 async function fakeAmazonPayCharge(req: PaymentRequest) {
@@ -18,7 +18,7 @@ async function fakeAmazonPayCharge(req: PaymentRequest) {
 const amazonPayPlugin: PaymentGateway = {
   name: "amazon-pay",
   currencies: ["USD", "JPY", "EUR"],
-  async charge(req: PaymentRequest): Promise<PaymentResult> {
+  async charge(req) {
     try {
       const id = await fakeAmazonPayCharge(req);
       return { ok: true, txId: id };
@@ -29,7 +29,7 @@ const amazonPayPlugin: PaymentGateway = {
 };
 
 // プラグイン関数をエクスポート
-export default function amazonPayPluginLoader(api: KernelAPI) {
+export default function amazonPayPluginLoader(api: Kernel) {
   api.registerGateway(amazonPayPlugin);
   api.logger.info("Amazon Pay plugin registered");
 }

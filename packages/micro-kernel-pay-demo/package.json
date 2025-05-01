@@ -22,7 +22,7 @@
   "dependencies": {
     "@hono/node-server": "^1.14.1",
     "hono": "^4.7.8",
-    "micro-kernel-pay": "workspace:*",
+    "micro-kernel-pay-sdk": "workspace:*",
     "micro-kernel-amazon-pay": "workspace:*"
   }
 }

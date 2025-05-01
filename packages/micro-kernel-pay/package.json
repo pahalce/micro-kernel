@@ -1,19 +1,23 @@
 {
-  "name": "micro-kernel-pay",
+  "name": "micro-kernel-pay-sdk",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "マイクロカーネルアーキテクチャに基づく決済システムSDK",
+  "main": "dist/src/index.js",
+  "exports": {
+    ".": "./dist/src/index.js",
+    "./plugins": "./dist/src/plugins/index.js"
+  },
+  "types": "dist/src/index.d.ts",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "tsc -p tsconfig.json --watch",
     "build": "tsc -p tsconfig.json",
-    "start": "node dist/index.js",
     "lint": "biome lint --write **/*.ts",
     "format": "biome format --write **/*.ts",
     "check": "biome check --write **/*.ts",
     "clean": "rm -rf dist node_modules"
   },
-  "keywords": [],
+  "keywords": ["payment", "sdk", "micro-kernel"],
   "author": "",
   "license": "ISC",
   "devDependencies": {
@@ -21,9 +25,5 @@
     "@types/node": "^22.15.3",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3"
-  },
-  "dependencies": {
-    "@hono/node-server": "^1.14.1",
-    "hono": "^4.7.8"
   }
 }

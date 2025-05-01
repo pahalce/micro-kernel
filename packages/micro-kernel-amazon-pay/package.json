@@ -19,6 +19,6 @@
     "typescript": "^5.8.3"
   },
   "peerDependencies": {
-    "micro-kernel-pay": "workspace:*"
+    "micro-kernel-pay-sdk": "workspace:*"
   }
 }

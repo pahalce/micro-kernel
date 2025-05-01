@@ -1,12 +1,12 @@
 /* ------------------------------------------------------------------
    Stripe 決済プラグイン（簡易ダミー SDK で再現）
 ------------------------------------------------------------------- */
-import type { KernelAPI } from "../src/kernel.ts";
+import type { KernelAPI } from "../kernel.js";
 import type {
   PaymentGateway,
   PaymentRequest,
   PaymentResult,
-} from "../src/types.ts";
+} from "../types.js";
 
 /* 疑似 Stripe SDK */
 async function fakeStripeCharge(req: PaymentRequest) {
@@ -18,7 +18,7 @@ async function fakeStripeCharge(req: PaymentRequest) {
 const stripePlugin: PaymentGateway = {
   name: "stripe",
   currencies: ["USD", "JPY"],
-  async charge(req: PaymentRequest): Promise<PaymentResult> {
+  async charge(req: PaymentRequest) {
     try {
       const id = await fakeStripeCharge(req);
       return { ok: true, txId: id };
@@ -28,6 +28,8 @@ const stripePlugin: PaymentGateway = {
   },
 };
 
-export default (api: KernelAPI) => {
+// プラグイン関数をデフォルトエクスポート
+export default function stripePluginLoader(api: KernelAPI) {
   api.registerGateway(stripePlugin);
-};
+  api.logger.info("Stripe plugin registered");
+}

@@ -1,8 +1,12 @@
 /* ------------------------------------------------------------------
    PayPal 決済プラグイン（簡易ダミー実装）
 ------------------------------------------------------------------- */
-import type { KernelAPI } from "../src/kernel.ts";
-import type { PaymentGateway, PaymentRequest } from "../src/types.ts";
+import type { KernelAPI } from "../kernel.js";
+import type {
+  PaymentGateway,
+  PaymentRequest,
+  PaymentResult,
+} from "../types.js";
 
 async function fakePaypalCharge(req: PaymentRequest) {
   // 実際は PayPal REST API 呼び出し
@@ -23,6 +27,8 @@ const paypalPlugin: PaymentGateway = {
   },
 };
 
-export default (api: KernelAPI) => {
+// プラグイン関数をデフォルトエクスポート
+export default function paypalPluginLoader(api: KernelAPI) {
   api.registerGateway(paypalPlugin);
-};
+  api.logger.info("PayPal plugin registered");
+}

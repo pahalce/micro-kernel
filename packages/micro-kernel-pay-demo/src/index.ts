@@ -4,18 +4,21 @@
 
 import { Hono } from "hono";
 import { serve } from "@hono/node-server";
-import { Kernel } from "micro-kernel-pay/dist/src/kernel.js";
+import { Kernel, type PaymentRequest } from "micro-kernel-pay-sdk";
 import amazonPayPlugin from "micro-kernel-amazon-pay";
-import type { PaymentRequest } from "micro-kernel-pay/dist/src/types.js";
+import { paypalPlugin, stripePlugin } from "micro-kernel-pay-sdk/plugins";
 
 /* --- カーネル起動 & プラグインロード --- */
-// 外部プラグインをKernelに渡す方法
+// 複数のプラグインを渡す方法
 const kernel = new Kernel({
-  plugins: [amazonPayPlugin], // Amazon Pay プラグインを渡す
+  plugins: [
+    // SDK標準プラグイン
+    paypalPlugin,
+    stripePlugin,
+    // 外部プラグイン
+    amazonPayPlugin,
+  ],
 });
-
-// ローカルプラグインが必要ない場合は、この行をコメントアウトかtry-catchで囲みます
-await kernel.loadLocalPlugins();
 
 /* --- Hono アプリ定義 --- */
 const app = new Hono();
@@ -23,8 +26,29 @@ const app = new Hono();
 app.get("/", (c) => {
   return c.text(`
     Payment Hub Demo
-    Available gateways: amazon-pay
+    Available gateways: stripe, paypal, amazon-pay
     
+    Stripe決済:
+    curl -X POST http://localhost:3002/pay \\
+      -H "Content-Type: application/json" \\
+      -d '{
+        "gateway": "stripe",
+        "amount": 5000,
+        "currency": "JPY",
+        "customerId": "cust_123456"
+      }'
+      
+    PayPal決済:
+    curl -X POST http://localhost:3002/pay \\
+      -H "Content-Type: application/json" \\
+      -d '{
+        "gateway": "paypal",
+        "amount": 5000,
+        "currency": "USD",
+        "customerId": "cust_123456"
+      }'
+      
+    Amazon Pay決済:
     curl -X POST http://localhost:3002/pay \\
       -H "Content-Type: application/json" \\
       -d '{

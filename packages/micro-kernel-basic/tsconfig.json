@@ -1,8 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
-    "target": "es2020",           // ES2017 以上なら OK。node16 環境向けに es2020 推奨
-    "module": "nodenext",         // ★ top-level await を許可（esnext / nodenext / node16 など）
+    "target": "es2020", // ES2017 以上なら OK。node16 環境向けに es2020 推奨
+    "module": "nodenext", // ★ top-level await を許可（esnext / nodenext / node16 など）
     "moduleResolution": "nodenext",
     "outDir": "dist",
     "rootDir": ".",

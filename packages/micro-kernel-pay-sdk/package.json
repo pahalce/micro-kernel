@@ -15,7 +15,9 @@
     "lint": "biome lint --write **/*.ts",
     "format": "biome format --write **/*.ts",
     "check": "biome check --write **/*.ts",
-    "clean": "rm -rf dist node_modules"
+    "clean": "rm -rf dist node_modules",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "keywords": ["payment", "sdk", "micro-kernel"],
   "author": "",
@@ -24,6 +26,7 @@
     "@biomejs/biome": "1.9.4",
     "@types/node": "^22.15.3",
     "tsx": "^4.19.4",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vitest": "^1.6.1"
   }
 }

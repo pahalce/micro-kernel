@@ -2,7 +2,7 @@
 export interface PaymentRequest {
   gateway: string; // "stripe" | "paypal" | ...
   amount: number; // smallest unit (yen ⇒ 円, usd ⇒ cent)
-  currency: "JPY" | "USD";
+  currency: "JPY" | "USD" | "EUR";
   customerId: string;
 }
 

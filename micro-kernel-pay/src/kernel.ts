@@ -29,7 +29,7 @@ export interface KernelAPI {
 class SimpleBus implements EventBus {
 	/** topic → Set<listener> */
 	#listeners = new Map<string, Set<(d: unknown) => void>>();
-	publish<T = unknown>(topic: string, data: T): void {
+	publish<T = unknown>(topic: string, data: T) {
 		const listeners = this.#listeners.get(topic);
 		if (!listeners) return;
 		for (const fn of listeners) {
@@ -37,7 +37,7 @@ class SimpleBus implements EventBus {
 		}
 	}
 
-	subscribe<T = unknown>(topic: string, fn: (d: T) => void): () => void {
+	subscribe<T = unknown>(topic: string, fn: (d: T) => void) {
 		const set =
 			this.#listeners.get(topic) ??
 			(() => {
@@ -83,14 +83,14 @@ export class Kernel implements KernelAPI {
 
 	#gateways = new Map<string, PaymentGateway>();
 
-	registerGateway(gw: PaymentGateway): void {
+	registerGateway(gw: PaymentGateway) {
 		if (this.#gateways.has(gw.name))
 			throw new Error(`gateway "${gw.name}" already registered`);
 		this.#gateways.set(gw.name, gw);
 		this.logger.info(`💳  gateway registered: ${gw.name}`);
 	}
 
-	async pay(req: PaymentRequest): Promise<PaymentResult> {
+	async pay(req: PaymentRequest) {
 		const gw = this.#gateways.get(req.gateway);
 		if (!gw) return { ok: false, error: "unsupported gateway" };
 		return gw.charge(req);
@@ -98,7 +98,7 @@ export class Kernel implements KernelAPI {
 
 	/* ---------------- プラグインローダ -------------------- */
 
-	async loadPlugins(dir = path.resolve("plugins")): Promise<void> {
+	async loadPlugins(dir = path.resolve("plugins")) {
 		for (const file of await fs.readdir(dir)) {
 			if (!file.match(/\.(c?[jt]s|mjs)$/)) continue;
 

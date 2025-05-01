@@ -8,7 +8,7 @@ import type {
 	PaymentResult,
 } from "../src/types.ts";
 
-async function fakePaypalCharge(req: PaymentRequest): Promise<string> {
+async function fakePaypalCharge(req: PaymentRequest) {
 	// 実際は PayPal REST API 呼び出し
 	await new Promise((r) => setTimeout(r, 150));
 	return `paypal_tx_${Date.now()}`;
@@ -17,7 +17,7 @@ async function fakePaypalCharge(req: PaymentRequest): Promise<string> {
 const paypalPlugin: PaymentGateway = {
 	name: "paypal",
 	currencies: ["USD"],
-	async charge(req: PaymentRequest): Promise<PaymentResult> {
+	async charge(req: PaymentRequest) {
 		try {
 			const id = await fakePaypalCharge(req);
 			return { ok: true, txId: id };
@@ -27,6 +27,6 @@ const paypalPlugin: PaymentGateway = {
 	},
 };
 
-export default (api: KernelAPI): void => {
+export default (api: KernelAPI) => {
 	api.registerGateway(paypalPlugin);
 };

@@ -9,7 +9,7 @@ import type {
 } from "../src/types.ts";
 
 /* 疑似 Stripe SDK */
-async function fakeStripeCharge(req: PaymentRequest): Promise<string> {
+async function fakeStripeCharge(req: PaymentRequest) {
 	// 実際は Stripe SDK の API 呼び出し
 	await new Promise((r) => setTimeout(r, 200));
 	return `ch_${Math.random().toString(36).slice(2, 10)}`;
@@ -28,6 +28,6 @@ const stripePlugin: PaymentGateway = {
 	},
 };
 
-export default (api: KernelAPI): void => {
+export default (api: KernelAPI) => {
 	api.registerGateway(stripePlugin);
 };

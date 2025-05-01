@@ -33,6 +33,3 @@ export default function amazonPayPluginLoader(api: Kernel) {
   api.registerGateway(amazonPayPlugin);
   api.logger.info("Amazon Pay plugin registered");
 }
-
-// プラグイン本体も直接エクスポート
-export { amazonPayPlugin };

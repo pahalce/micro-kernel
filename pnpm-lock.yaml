@@ -19,7 +19,7 @@ importers:
     dependencies:
       micro-kernel-pay-sdk:
         specifier: workspace:*
-        version: link:../micro-kernel-pay
+        version: link:../micro-kernel-pay-sdk
     devDependencies:
       '@biomejs/biome':
         specifier: 1.9.4
@@ -27,43 +27,6 @@ importers:
       '@types/node':
         specifier: ^22.15.3
         version: 22.15.3
-      typescript:
-        specifier: ^5.8.3
-        version: 5.8.3
-
-  packages/micro-kernel-basic:
-    dependencies:
-      '@hono/node-server':
-        specifier: ^1.14.1
-        version: 1.14.1(hono@4.7.8)
-      hono:
-        specifier: ^4.7.8
-        version: 4.7.8
-    devDependencies:
-      '@biomejs/biome':
-        specifier: 1.9.4
-        version: 1.9.4
-      '@types/node':
-        specifier: ^22.15.3
-        version: 22.15.3
-      tsx:
-        specifier: ^4.19.4
-        version: 4.19.4
-      typescript:
-        specifier: ^5.8.3
-        version: 5.8.3
-
-  packages/micro-kernel-pay:
-    devDependencies:
-      '@biomejs/biome':
-        specifier: 1.9.4
-        version: 1.9.4
-      '@types/node':
-        specifier: ^22.15.3
-        version: 22.15.3
-      tsx:
-        specifier: ^4.19.4
-        version: 4.19.4
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
@@ -81,7 +44,22 @@ importers:
         version: link:../micro-kernel-amazon-pay
       micro-kernel-pay-sdk:
         specifier: workspace:*
-        version: link:../micro-kernel-pay
+        version: link:../micro-kernel-pay-sdk
+    devDependencies:
+      '@biomejs/biome':
+        specifier: 1.9.4
+        version: 1.9.4
+      '@types/node':
+        specifier: ^22.15.3
+        version: 22.15.3
+      tsx:
+        specifier: ^4.19.4
+        version: 4.19.4
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
+
+  packages/micro-kernel-pay-sdk:
     devDependencies:
       '@biomejs/biome':
         specifier: 1.9.4

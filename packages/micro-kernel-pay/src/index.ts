@@ -15,12 +15,14 @@ await kernel.loadPlugins(); // Stripe & PayPal が登録される
 const app = new Hono();
 
 app.post("/pay", async (c) => {
-	const req = await c.req.json<PaymentRequest>();
-	const result = await kernel.pay(req);
-	return c.json(result, result.ok ? 200 : 400);
+  const req = await c.req.json<PaymentRequest>();
+  const result = await kernel.pay(req);
+  return c.json(result, result.ok ? 200 : 400);
 });
 
 /* --- HTTP サーバ起動 --- */
-serve(app, ({ port }) =>
-	kernel.logger.info(`🚀  Payment Hub running at http://localhost:${port}`),
+// ポート番号を明示的に設定
+const PORT = 3001;
+serve({ port: PORT, fetch: app.fetch }, () =>
+  kernel.logger.info(`🚀  Payment Hub running at http://localhost:${PORT}`),
 );

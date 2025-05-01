@@ -14,18 +14,20 @@ await kernel.loadPlugins();
 const app = new Hono();
 
 app.post("/greet", async (c) => {
-	const { name } = await c.req.json<{ name?: string }>();
-	const message = await kernel.exec("greet", name);
-	return c.json({ message });
+  const { name } = await c.req.json<{ name?: string }>();
+  const message = await kernel.exec("greet", name);
+  return c.json({ message });
 });
 
 app.post("/order", async (c) => {
-	const order = await c.req.json<unknown>();
-	kernel.bus.publish("order.created", order);
-	return c.json({ status: "accepted" }, 202);
+  const order = await c.req.json<unknown>();
+  kernel.bus.publish("order.created", order);
+  return c.json({ status: "accepted" }, 202);
 });
 
 /* --- HTTP サーバ起動 --- */
-serve(app, ({ port }) =>
-	kernel.logger.info(`🚀  Hono listening on http://localhost:${port}`),
+// ポート番号を明示的に設定
+const PORT = 3000;
+serve({ port: PORT, fetch: app.fetch }, () =>
+  kernel.logger.info(`🚀  Hono listening on http://localhost:${PORT}`),
 );

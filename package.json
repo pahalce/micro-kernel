@@ -1,0 +1,19 @@
+{
+  "name": "micro-kernel-monorepo",
+  "private": true,
+  "packageManager": "pnpm@9.1.4",
+  "scripts": {
+    "biome": "biome",
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "format": "biome format --write .",
+    "start": "turbo run start",
+    "test": "turbo run test",
+    "clean": "turbo run clean && rm -rf node_modules"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.7.3",
+    "turbo": "^2.5.2"
+  }
+}

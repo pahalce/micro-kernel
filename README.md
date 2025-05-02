@@ -1,18 +1,40 @@
-# マイクロカーネルモノレポ
+# ソフトウェアアーキテクチャ実装集
 
-このリポジトリはマイクロカーネルアーキテクチャパターンを採用したモノレポです。複数のサービスがそれぞれマイクロカーネルパターンで実装されており、共通の開発環境と依存関係管理を行っています。
+このリポジトリは、さまざまなソフトウェアアーキテクチャパターンの実装例を集めたモノレポです。各アーキテクチャは独自のディレクトリに実装されており、共通の開発環境と依存関係管理を行っています。
 
-## 構成
+## 実装済みアーキテクチャ
 
-このモノレポは以下のパッケージで構成されています：
+- [マイクロカーネルアーキテクチャ](./architectures/microkernel/README.md)
+  - 最小限のコア（カーネル）と拡張機能（プラグイン）で構成されるアーキテクチャ
+  - 決済処理SDKとプラグインの実装例
 
-- **SDK**
-  - **@micro-kernel/pay-sdk**: 決済処理のマイクロカーネルSDK実装
-- **プラグイン**
-  - **3rd-party**
-    - **@micro-kernel/amazon-pay-plugin**: Amazon Pay用プラグイン
-- **デモアプリケーション**
-  - **@micro-kernel/pay-demo**: 決済処理のデモアプリケーション（ポート3002）
+- [イベント駆動アーキテクチャ](./architectures/event-driven/README.md) (実装予定)
+  - イベントの生成、検出、消費を通じてコンポーネント間で通信するアーキテクチャ
+  - イベントストリーミング、CQRS、イベントソーシングの実装例
+
+## 今後追加予定のアーキテクチャ
+
+- **レイヤードアーキテクチャ**
+- **クリーンアーキテクチャ**
+- **ヘキサゴナルアーキテクチャ**
+- **サービス指向アーキテクチャ (SOA)**
+- **マイクロサービスアーキテクチャ**
+
+## ディレクトリ構造
+
+```
+architectures/
+├── microkernel/               # マイクロカーネルアーキテクチャ
+│   ├── packages/              # 実装パッケージ
+│   │   ├── sdk/               # SDK実装
+│   │   └── plugins/           # プラグイン実装
+│   │       └── 3rd-party/     # サードパーティプラグイン
+│   └── demos/                 # デモアプリケーション
+├── event-driven/              # イベント駆動アーキテクチャ
+│   ├── packages/              # 実装パッケージ
+│   └── demos/                 # デモアプリケーション
+└── [future architectures]/    # 将来追加するアーキテクチャ
+```
 
 ## 技術スタック
 
@@ -20,7 +42,6 @@
 - **ビルドツール**: turborepo
 - **パッケージマネージャ**: pnpm
 - **リンター/フォーマッター**: Biome
-- **Webフレームワーク**: Hono
 
 ## 開発方法
 
@@ -34,7 +55,7 @@
 ```bash
 # リポジトリのクローン
 git clone <リポジトリURL>
-cd micro-kernel
+cd software-architecture-examples
 
 # 依存関係のインストール
 pnpm install
@@ -46,8 +67,9 @@ pnpm install
 # すべてのサービスを起動
 pnpm dev
 
-# 特定のサービスのみ起動
-pnpm --filter @micro-kernel/pay-demo dev
+# 特定のアーキテクチャのみ起動
+pnpm --filter @arch/microkernel-* dev
+pnpm --filter @arch/event-driven-* dev
 ```
 
 ### ビルド
@@ -56,140 +78,17 @@ pnpm --filter @micro-kernel/pay-demo dev
 # すべてのパッケージをビルド
 pnpm build
 
-# 特定のパッケージのみビルド
-pnpm --filter @micro-kernel/pay-sdk build
+# 特定のアーキテクチャのみビルド
+pnpm --filter @arch/microkernel-* build
 ```
 
-### リンター・フォーマッター
+## 学習リソース
 
-```bash
-# すべてのパッケージでリントを実行
-pnpm lint
+各アーキテクチャパターンの詳細については、以下のリソースを参照してください：
 
-# コードフォーマット
-pnpm format
-```
-
-## アーキテクチャ
-
-このプロジェクトはマイクロカーネルアーキテクチャパターンを採用しています。各サービスは以下の構成要素から成ります：
-
-1. **カーネル**: コアとなる機能を提供し、プラグイン管理を行う
-2. **プラグイン**: 拡張機能を提供する
-3. **API層**: クライアントとカーネルの間のインターフェース (Hono)
-
-## コード例
-
-### カーネルとプラグインの利用例
-
-```typescript
-import { Hono } from "hono";
-import { serve } from "@hono/node-server";
-import { Kernel, type PaymentRequest } from "@micro-kernel/pay-sdk";
-import amazonPayPlugin from "@micro-kernel/amazon-pay-plugin";
-import { paypalPlugin, stripePlugin } from "@micro-kernel/pay-sdk/plugins";
-
-// カーネル初期化とプラグインのロード
-const kernel = new Kernel({
-  plugins: [
-    // SDK標準プラグイン
-    paypalPlugin, 
-    stripePlugin,
-    // 外部プラグイン  
-    amazonPayPlugin,
-  ],
-});
-
-// API層の実装 (Hono)
-const app = new Hono();
-
-app.post("/pay", async (c) => {
-  const req = await c.req.json<PaymentRequest>();
-  const result = await kernel.pay(req);
-  return c.json(result, result.ok ? 200 : 400);
-});
-
-// サーバー起動
-const PORT = 3002;
-serve({ port: PORT, fetch: app.fetch });
-```
-
-### カスタムプラグインの実装例
-
-```typescript
-import type {
-  Kernel,
-  PaymentGateway,
-  PaymentRequest,
-} from "@micro-kernel/pay-sdk";
-
-// プラグインの実装
-const amazonPayPlugin: PaymentGateway = {
-  name: "amazon-pay",
-  currencies: ["USD", "JPY", "EUR"],
-  async charge(req: PaymentRequest) {
-    try {
-      // 決済処理の実装
-      const id = await fakeAmazonPayCharge(req);
-      return { ok: true, txId: id };
-    } catch (e) {
-      return { ok: false, error: String(e) };
-    }
-  },
-};
-
-// プラグインローダー関数（カーネルに登録するための関数）
-export default function amazonPayPluginLoader(api: Kernel) {
-  api.registerGateway(amazonPayPlugin);
-  api.logger.info("Amazon Pay plugin registered");
-}
-```
-
-## エンドポイント
-
-### @micro-kernel/pay-demo (ポート3002)
-
-- `POST /pay`: 決済リクエストを処理する
-
-## サンプルcurlコマンド
-
-### @micro-kernel/pay-demo
-
-**Stripe決済**:
-```bash
-curl -X POST http://localhost:3002/pay \
-  -H "Content-Type: application/json" \
-  -d '{
-    "gateway": "stripe",
-    "amount": 5000,
-    "currency": "JPY",
-    "customerId": "cust_123456"
-  }'
-```
-
-**PayPal決済**:
-```bash
-curl -X POST http://localhost:3002/pay \
-  -H "Content-Type: application/json" \
-  -d '{
-    "gateway": "paypal",
-    "amount": 5000,
-    "currency": "USD",
-    "customerId": "cust_123456"
-  }'
-```
-
-**Amazon Pay決済**:
-```bash
-curl -X POST http://localhost:3002/pay \
-  -H "Content-Type: application/json" \
-  -d '{
-    "gateway": "amazon-pay",
-    "amount": 5000,
-    "currency": "JPY",
-    "customerId": "cust_123456"
-  }'
-```
+- [マーティン・ファウラーのソフトウェアアーキテクチャガイド](https://martinfowler.com/architecture/)
+- [マイクロサービスパターン](https://microservices.io/patterns/index.html)
+- [エンタープライズ統合パターン](https://www.enterpriseintegrationpatterns.com/)
 
 ## ライセンス
 

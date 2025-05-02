@@ -1,4 +1,4 @@
 packages:
-  - 'packages/sdk/**'
-  - 'packages/plugins/**'
-  - 'demos/**' 
+  - 'architectures/*/packages/**'
+  - 'architectures/*/demos/**'
+  - 'shared/**' 

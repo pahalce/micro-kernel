@@ -5,7 +5,7 @@ import type {
   Kernel,
   PaymentGateway,
   PaymentRequest,
-} from "@micro-kernel/pay-sdk";
+} from "@arch/microkernel-pay-sdk";
 
 /* 疑似 Amazon Pay SDK */
 async function fakeAmazonPayCharge(req: PaymentRequest) {

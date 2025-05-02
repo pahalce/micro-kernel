@@ -1,0 +1,22 @@
+{
+  "name": "@event-driven/kafka",
+  "private": true,
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "clean": "rm -rf dist node_modules"
+  },
+  "dependencies": {
+    "kafkajs": "^2.2.4"
+  },
+  "devDependencies": {
+    "@shared/tsconfig-base": "workspace:*",
+    "typescript": "^5.4.3"
+  }
+}

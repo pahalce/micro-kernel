@@ -15,6 +15,35 @@ importers:
         specifier: ^2.5.2
         version: 2.5.2
 
+  architectures/event-driven/packages/events:
+    dependencies:
+      zod:
+        specifier: ^3.22.4
+        version: 3.24.3
+    devDependencies:
+      '@shared/tsconfig-base':
+        specifier: workspace:*
+        version: link:../../../../shared/tsconfig-base
+      tsx:
+        specifier: ^4.7.0
+        version: 4.19.4
+      typescript:
+        specifier: ^5.4.3
+        version: 5.8.3
+
+  architectures/event-driven/packages/kafka:
+    dependencies:
+      kafkajs:
+        specifier: ^2.2.4
+        version: 2.2.4
+    devDependencies:
+      '@shared/tsconfig-base':
+        specifier: workspace:*
+        version: link:../../../../shared/tsconfig-base
+      typescript:
+        specifier: ^5.4.3
+        version: 5.8.3
+
   architectures/microkernel/demos/micro-kernel-pay-demo:
     dependencies:
       '@arch/microkernel-amazon-pay-plugin':
@@ -728,6 +757,10 @@ packages:
   js-tokens@9.0.1:
     resolution: {integrity: sha512-mxa9E9ITFOt0ban3j6L5MpjwegGz6lBQmM1IJkWeBZGcMxto50+eWdjC/52xDbS2vy0k7vIMK0Fe2wfL9OQSpQ==}
 
+  kafkajs@2.2.4:
+    resolution: {integrity: sha512-j/YeapB1vfPT2iOIUn/vxdyKEuhuY2PxMBvf5JWux6iSaukAccrMtXEY/Lb7OvavDhOWME589bpLrEdnVHjfjA==}
+    engines: {node: '>=14.0.0'}
+
   local-pkg@0.5.1:
     resolution: {integrity: sha512-9rrA30MRRP3gBD3HTGnC6cDFpaE1kVDWxWgqWJUN0RvDNAo+Nz/9GxB+nHOH0ifbVFy0hSA1V6vFDvnx54lTEQ==}
     engines: {node: '>=14'}
@@ -981,6 +1014,9 @@ packages:
   yocto-queue@1.2.1:
     resolution: {integrity: sha512-AyeEbWOu/TAXdxlV9wmGcR0+yh2j3vYPGOECcIj2S7MkrLyC7ne+oye2BKTItt0ii2PHk4cDy+95+LshzbXnGg==}
     engines: {node: '>=12.20'}
+
+  zod@3.24.3:
+    resolution: {integrity: sha512-HhY1oqzWCQWuUqvBFnsyrtZRhyPeR7SUGv+C4+MsisMuVfSPx8HpwWqH8tRahSlt6M3PiFAcoeFhZAqIXTxoSg==}
 
 snapshots:
 
@@ -1440,6 +1476,8 @@ snapshots:
 
   js-tokens@9.0.1: {}
 
+  kafkajs@2.2.4: {}
+
   local-pkg@0.5.1:
     dependencies:
       mlly: 1.7.4
@@ -1681,3 +1719,5 @@ snapshots:
       stackback: 0.0.2
 
   yocto-queue@1.2.1: {}
+
+  zod@3.24.3: {}

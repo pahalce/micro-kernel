@@ -28,5 +28,8 @@
       "quoteStyle": "double",
       "attributePosition": "auto"
     }
+  },
+  "files": {
+    "ignore": ["dist", "node_modules"]
   }
 }

@@ -3,7 +3,7 @@ import { serve } from "@hono/node-server";
 import { v4 as uuid } from "uuid";
 import dayjs from "dayjs";
 
-import { kafka } from "@event-driven/kafka";
+import { kafka, produceJSON } from "@event-driven/kafka";
 import { Topics, DiarySubmittedSchema } from "@event-driven/events";
 const producer = kafka.producer();
 
@@ -28,10 +28,12 @@ app.post("/diaries", async (c) => {
   DiarySubmittedSchema.parse(payload);
 
   // ❸ Kafka へ Publish
-  const res = await producer.send({
-    topic: Topics.DiarySubmitted,
-    messages: [{ key: payload.diaryId, value: JSON.stringify(payload) }],
-  });
+  const res = await produceJSON(
+    producer,
+    Topics.DiarySubmitted,
+    payload.diaryId,
+    payload,
+  );
 
   console.log("[diary] produced →", payload.diaryId);
   console.log("[diary] res →", res);

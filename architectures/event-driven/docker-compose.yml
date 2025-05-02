@@ -1,33 +1,58 @@
 version: "3.9"
+
 services:
+  # ─────────────────────────── Zookeeper
   zookeeper:
     image: confluentinc/cp-zookeeper:7.6.0
+    restart: unless-stopped
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+    networks: [knet]
 
+  # ─────────────────────────── Kafka broker (single node)
   kafka:
     image: confluentinc/cp-kafka:7.6.0
-    ports: ["9092:9092"]               # ホスト OS 用
+    restart: unless-stopped
+    ports:
+      - "9092:9092"        # ← ホスト OS で動くサービス用
+      - "19092:19092"      # ← Docker内からのアクセス用
+    networks: [knet]
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
 
-      # ───────────────────────────── listeners
-      KAFKA_LISTENERS: INTERNAL://kafka:29092,EXTERNAL://0.0.0.0:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:29092,EXTERNAL://localhost:9092
+      # 1. listener を 3 本宣言
+      KAFKA_LISTENERS: INTERNAL://kafka:29092,HOST://0.0.0.0:9092,DOCKER://0.0.0.0:19092
 
-      # ★ 追加! どのリスナー名をブローカー間通信に使うか
+      # 2. プロトコルマップ
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,HOST:PLAINTEXT,DOCKER:PLAINTEXT
+
+      # 3. 広報アドレス（クライアントから見える名前）
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:29092,HOST://localhost:9092,DOCKER://kafka:19092
+
+      # 4. ブローカー同士は INTERNAL を使う
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
 
-      # Topic 自動生成を許可（任意）
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
-    depends_on: [zookeeper]
+      # 5. 1 ノード運用用に複製係数を 1 に
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
 
+      # 6. Topic 自動生成
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+
+  # ─────────────────────────── Kafka-UI
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
-    ports: ["8080:8080"]
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    networks: [knet]
     environment:
       KAFKA_CLUSTERS_0_NAME: reanavi
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092   # 内部リスナー
-    depends_on: [kafka]
+      # UI → kafka コンテナへの接続
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:19092
+
+networks:
+  knet:
+    driver: bridge

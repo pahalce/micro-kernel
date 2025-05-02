@@ -61,6 +61,40 @@ importers:
         specifier: ^5.4.3
         version: 5.8.3
 
+  architectures/event-driven/apps/emotion-analysis:
+    dependencies:
+      '@event-driven/events':
+        specifier: workspace:*
+        version: link:../../packages/events
+      '@event-driven/kafka':
+        specifier: workspace:*
+        version: link:../../packages/kafka
+      emoji-regex:
+        specifier: ^10.4.0
+        version: 10.4.0
+      kafkajs:
+        specifier: ^2.2.4
+        version: 2.2.4
+      kuromoji:
+        specifier: ^0.1.2
+        version: 0.1.2
+    devDependencies:
+      '@shared/tsconfig-base':
+        specifier: workspace:*
+        version: link:../../../../shared/tsconfig-base
+      '@types/kuromoji':
+        specifier: ^0.1.3
+        version: 0.1.3
+      '@types/node':
+        specifier: ^22.15.3
+        version: 22.15.3
+      tsx:
+        specifier: ^4.7.0
+        version: 4.19.4
+      typescript:
+        specifier: ^5.4.3
+        version: 5.8.3
+
   architectures/event-driven/packages/events:
     dependencies:
       zod:
@@ -704,8 +738,14 @@ packages:
   '@tsconfig/node16@1.0.4':
     resolution: {integrity: sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==}
 
+  '@types/doublearray@0.0.32':
+    resolution: {integrity: sha512-HloTru3I3a55runIVqZX1YBQi2L5A4peNQPh33yshzB4ttt1qHCnHPkuhy9Djy/cTx7i5xJvxItKRPCmvnfpGw==}
+
   '@types/estree@1.0.7':
     resolution: {integrity: sha512-w28IoSUCJpidD/TGviZwwMJckNESJZXFu7NBZ5YJ4mEUnNraUn9Pm8HSZm/jDF1pDWYKspWE7oVphigUPRakIQ==}
+
+  '@types/kuromoji@0.1.3':
+    resolution: {integrity: sha512-u+YwX6eJj6Fmm0F5qunsyA+X8HSiyRNNE5ON3itD3tERax4meq9tv+S7bjTMXkPjqbdBGUmH2maGDCuEvpODwg==}
 
   '@types/node@22.15.3':
     resolution: {integrity: sha512-lX7HFZeHf4QG/J7tBZqrCAXwz9J5RD56Y6MpP0eJkka8p+K0RY/yBTW7CYFJ4VGCclxqOLKmiGP5juQc6MKgcw==}
@@ -746,6 +786,9 @@ packages:
 
   assertion-error@1.1.0:
     resolution: {integrity: sha512-jgsaNduz+ndvGyFt3uSuWqvy4lCnIJiovtouQN5JZHOKCS2QuhEdbcQHFhVksz2N2U9hXJo8odG7ETyWlEeuDw==}
+
+  async@2.6.4:
+    resolution: {integrity: sha512-mzo5dfJYwAn29PeiJ0zvwTo04zj8HDJj0Mn8TD7sno7q12prdbnasKJHhkm2c1LgrhlJ0teaea8860oxi51mGA==}
 
   cac@6.7.14:
     resolution: {integrity: sha512-b6Ilus+c3RrdDk+JhLKUAQfzzgLEPy6wcXqS7f/xe1EETvsDP6GORG7SFuOs6cID5YkqchW/LXZbX5bc8j7ZcQ==}
@@ -791,6 +834,12 @@ packages:
   diff@4.0.2:
     resolution: {integrity: sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A==}
     engines: {node: '>=0.3.1'}
+
+  doublearray@0.0.2:
+    resolution: {integrity: sha512-aw55FtZzT6AmiamEj2kvmR6BuFqvYgKZUkfQ7teqVRNqD5UE0rw8IeW/3gieHNKQ5sPuDKlljWEn4bzv5+1bHw==}
+
+  emoji-regex@10.4.0:
+    resolution: {integrity: sha512-EC+0oUMY1Rqm4O6LLrgjtYDvcVYTy7chDnM4Q7030tP4Kwj3u/pR6gP9ygnp2CJMK5Gq+9Q2oqmrFJAz01DXjw==}
 
   esbuild@0.21.5:
     resolution: {integrity: sha512-mg3OPMV4hXywwpoDxu3Qda5xCKQi+vCTZq8S9J/EpkhB2HzKXq4SNFZE3+NK93JYxc8VMSep+lOUSC/RVKaBqw==}
@@ -846,9 +895,15 @@ packages:
     resolution: {integrity: sha512-j/YeapB1vfPT2iOIUn/vxdyKEuhuY2PxMBvf5JWux6iSaukAccrMtXEY/Lb7OvavDhOWME589bpLrEdnVHjfjA==}
     engines: {node: '>=14.0.0'}
 
+  kuromoji@0.1.2:
+    resolution: {integrity: sha512-V0dUf+C2LpcPEXhoHLMAop/bOht16Dyr+mDiIE39yX3vqau7p80De/koFqpiTcL1zzdZlc3xuHZ8u5gjYRfFaQ==}
+
   local-pkg@0.5.1:
     resolution: {integrity: sha512-9rrA30MRRP3gBD3HTGnC6cDFpaE1kVDWxWgqWJUN0RvDNAo+Nz/9GxB+nHOH0ifbVFy0hSA1V6vFDvnx54lTEQ==}
     engines: {node: '>=14'}
+
+  lodash@4.17.21:
+    resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
 
   loupe@2.3.7:
     resolution: {integrity: sha512-zSMINGVYkdpYSOBmLi0D1Uo7JU9nVdQKrHxC8eYlV+9YKK9WePqAlL7lSlorG/U2Fw1w0hTBmaa/jrQ3UbPHtA==}
@@ -1127,6 +1182,9 @@ packages:
   yocto-queue@1.2.1:
     resolution: {integrity: sha512-AyeEbWOu/TAXdxlV9wmGcR0+yh2j3vYPGOECcIj2S7MkrLyC7ne+oye2BKTItt0ii2PHk4cDy+95+LshzbXnGg==}
     engines: {node: '>=12.20'}
+
+  zlibjs@0.3.1:
+    resolution: {integrity: sha512-+J9RrgTKOmlxFSDHo0pI1xM6BLVUv+o0ZT9ANtCxGkjIVCCUdx9alUF8Gm+dGLKbkkkidWIHFDZHDMpfITt4+w==}
 
   zod@3.24.3:
     resolution: {integrity: sha512-HhY1oqzWCQWuUqvBFnsyrtZRhyPeR7SUGv+C4+MsisMuVfSPx8HpwWqH8tRahSlt6M3PiFAcoeFhZAqIXTxoSg==}
@@ -1438,7 +1496,13 @@ snapshots:
 
   '@tsconfig/node16@1.0.4': {}
 
+  '@types/doublearray@0.0.32': {}
+
   '@types/estree@1.0.7': {}
+
+  '@types/kuromoji@0.1.3':
+    dependencies:
+      '@types/doublearray': 0.0.32
 
   '@types/node@22.15.3':
     dependencies:
@@ -1487,6 +1551,10 @@ snapshots:
 
   assertion-error@1.1.0: {}
 
+  async@2.6.4:
+    dependencies:
+      lodash: 4.17.21
+
   cac@6.7.14: {}
 
   chai@4.5.0:
@@ -1526,6 +1594,10 @@ snapshots:
   diff-sequences@29.6.3: {}
 
   diff@4.0.2: {}
+
+  doublearray@0.0.2: {}
+
+  emoji-regex@10.4.0: {}
 
   esbuild@0.21.5:
     optionalDependencies:
@@ -1620,10 +1692,18 @@ snapshots:
 
   kafkajs@2.2.4: {}
 
+  kuromoji@0.1.2:
+    dependencies:
+      async: 2.6.4
+      doublearray: 0.0.2
+      zlibjs: 0.3.1
+
   local-pkg@0.5.1:
     dependencies:
       mlly: 1.7.4
       pkg-types: 1.3.1
+
+  lodash@4.17.21: {}
 
   loupe@2.3.7:
     dependencies:
@@ -1887,5 +1967,7 @@ snapshots:
   yn@3.1.1: {}
 
   yocto-queue@1.2.1: {}
+
+  zlibjs@0.3.1: {}
 
   zod@3.24.3: {}

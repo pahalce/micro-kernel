@@ -2,12 +2,12 @@
   "name": "@arch/microkernel-pay-sdk",
   "version": "1.0.0",
   "description": "マイクロカーネルアーキテクチャに基づく決済システムSDK",
-  "main": "dist/src/index.js",
+  "main": "dist/index.js",
   "exports": {
-    ".": "./dist/src/index.js",
-    "./plugins": "./dist/src/plugins/index.js"
+    ".": "./dist/index.js",
+    "./plugins": "./dist/plugins/index.js"
   },
-  "types": "dist/src/index.d.ts",
+  "types": "dist/index.d.ts",
   "type": "module",
   "scripts": {
     "dev": "tsc -p tsconfig.json --watch",
@@ -24,6 +24,7 @@
   "license": "ISC",
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
+    "@shared/tsconfig-base": "workspace:*",
     "@types/node": "^22.15.3",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3",

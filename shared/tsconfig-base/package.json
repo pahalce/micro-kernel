@@ -1,0 +1,15 @@
+{
+  "name": "@shared/tsconfig-base",
+  "version": "1.0.0",
+  "description": "共有TypeScript設定",
+  "files": [
+    "tsconfig.json",
+    "tsconfig.react.json",
+    "tsconfig.node.json",
+    "tsconfig.lib.json"
+  ],
+  "keywords": ["typescript", "tsconfig"],
+  "author": "",
+  "license": "MIT",
+  "private": true
+}

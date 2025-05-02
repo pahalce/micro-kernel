@@ -1,16 +1,10 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@shared/tsconfig-base/tsconfig.lib.json",
   "compilerOptions": {
     "target": "es2020",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "outDir": "dist",
     "rootDir": "src",
-    "declaration": true,
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "outDir": "dist"
   },
   "include": ["src"]
 }

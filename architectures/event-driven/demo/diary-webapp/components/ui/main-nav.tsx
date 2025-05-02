@@ -5,19 +5,16 @@ export function MainNav() {
   return (
     <nav className="flex flex-col md:flex-row items-center gap-1">
       <Button variant="ghost" size="sm" asChild>
-        <Link href="/">Home</Link>
+        <Link href="/">ホーム</Link>
       </Button>
       <Button variant="ghost" size="sm" asChild>
-        <Link href="/experiences">Experiences</Link>
+        <Link href="/diary">日記</Link>
       </Button>
       <Button variant="ghost" size="sm" asChild>
-        <Link href="/listings">Listings</Link>
+        <Link href="/analytics">分析</Link>
       </Button>
       <Button variant="ghost" size="sm" asChild>
-        <Link href="/about">About</Link>
-      </Button>
-      <Button variant="ghost" size="sm" asChild>
-        <Link href="/contact">Contact</Link>
+        <Link href="/profile">プロフィール</Link>
       </Button>
     </nav>
   );

@@ -82,6 +82,16 @@ pnpm build
 pnpm --filter @arch/microkernel-* build
 ```
 
+### タイプチェック
+
+```bash
+# すべてのパッケージの型チェックを実行
+pnpm typecheck
+
+# 特定のアーキテクチャのみ型チェックを実行
+pnpm --filter @arch/microkernel-* typecheck
+```
+
 ## 学習リソース
 
 各アーキテクチャパターンの詳細については、以下のリソースを参照してください：

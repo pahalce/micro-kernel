@@ -10,6 +10,7 @@
     "format": "biome format --write .",
     "start": "turbo run start",
     "test": "turbo run test",
+    "typecheck": "turbo run typecheck",
     "clean": "turbo run clean && rm -rf node_modules"
   },
   "devDependencies": {

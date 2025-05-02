@@ -1,11 +1,13 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
+import type { ScoreComputed } from "@event-driven/events";
+import { Topics } from "@event-driven/events";
 import { kafka } from "@event-driven/kafka";
-import { ScoreComputed, Topics } from "@event-driven/events";
 
 export const runtime = "nodejs"; // Edge でなく Node runtime を明示
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function GET(_req: NextRequest) {
   const consumer = kafka.consumer({ groupId: `web-${Date.now()}` });
   await consumer.connect();

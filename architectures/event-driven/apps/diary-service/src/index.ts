@@ -28,10 +28,13 @@ app.post("/diaries", async (c) => {
   DiarySubmittedSchema.parse(payload);
 
   // ❸ Kafka へ Publish
-  await producer.send({
+  const res = await producer.send({
     topic: Topics.DiarySubmitted,
     messages: [{ key: payload.diaryId, value: JSON.stringify(payload) }],
   });
+
+  console.log("[diary] produced →", payload.diaryId);
+  console.log("[diary] res →", res);
 
   return c.json({ id: payload.diaryId }, 201);
 });

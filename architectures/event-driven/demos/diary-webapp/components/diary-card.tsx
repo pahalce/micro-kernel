@@ -2,9 +2,17 @@
 
 import React from "react";
 import useSWR from "swr";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { CalendarDays, MessageSquare, AlertCircle } from "lucide-react";
+import { ScoreBadge } from "@/components/score-badge";
 import type { ScoreComputed } from "@event-driven/events";
 
 type Props = {
@@ -24,7 +32,7 @@ const MOCK_SCORES = {
 };
 
 export function DiaryCard({ diaryId, initialScores }: Props) {
-  const { data: diary, error } = useSWR<{ text: string }>(
+  const { data: diary, error } = useSWR<{ text: string; createdAt: string }>(
     `/api/diaries/${diaryId}`,
     fetcher,
   );
@@ -43,51 +51,87 @@ export function DiaryCard({ diaryId, initialScores }: Props) {
   const displayScores =
     scores || (isDiaryServiceDown ? MOCK_SCORES : undefined);
 
+  // Format the date if available
+  const formattedDate = diary?.createdAt
+    ? new Date(diary.createdAt).toLocaleDateString("en-US", {
+        weekday: "short",
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+    : null;
+
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle className="font-mono text-sm">{diaryId}</CardTitle>
+    <Card className="w-full overflow-hidden transition-all hover:shadow-md">
+      <CardHeader className="pb-2">
+        <div className="flex justify-between items-start">
+          <div className="space-y-1">
+            <CardTitle className="text-base font-medium text-muted-foreground truncate max-w-[200px]">
+              {diaryId}
+            </CardTitle>
+            {formattedDate && (
+              <div className="flex items-center text-sm text-muted-foreground">
+                <CalendarDays className="mr-1 h-3 w-3" />
+                {formattedDate}
+              </div>
+            )}
+          </div>
+        </div>
       </CardHeader>
 
       <CardContent>
         {/* ── 日記本文 ── */}
-        <p className="mb-2 whitespace-pre-wrap">
-          {diary ? diary.text : error ? "Failed to load diary" : "loading…"}
-        </p>
+        <div className="mb-4">
+          {diary ? (
+            <p className="whitespace-pre-wrap text-sm">{diary.text}</p>
+          ) : error ? (
+            <div className="flex items-center text-destructive gap-1">
+              <AlertCircle className="h-4 w-4" />
+              <span>Failed to load entry</span>
+            </div>
+          ) : (
+            <div className="flex items-center gap-1 text-muted-foreground">
+              <MessageSquare className="h-4 w-4 animate-pulse" />
+              <span>Loading entry...</span>
+            </div>
+          )}
+        </div>
+      </CardContent>
 
-        <Separator className="my-2" />
+      <CardFooter className="flex flex-col items-start pt-0">
+        <Separator className="mb-3 w-full" />
 
         {/* ── スコア表示 ── */}
         {displayScores ? (
-          <div className="flex gap-2 flex-wrap">
-            {Object.entries(displayScores).map(([k, v]) => (
-              <Badge key={k} variant="outline">
-                {k}:{" "}
-                <span
-                  className={
-                    v > 0.5 ? "text-green-600" : v < -0.3 ? "text-red-600" : ""
-                  }
-                >
-                  {v.toFixed(2)}
-                </span>
-              </Badge>
+          <div className="flex gap-1.5 flex-wrap">
+            {Object.entries(displayScores).map(([name, value]) => (
+              <ScoreBadge key={name} name={name} value={value} />
             ))}
           </div>
         ) : (
-          <Badge variant="secondary">scoring…</Badge>
+          <Badge variant="outline" className="animate-pulse">
+            Analyzing...
+          </Badge>
         )}
 
         {/* Show instruction if diary service is down */}
         {isDiaryServiceDown && (
-          <div className="mt-4 p-2 bg-amber-50 text-amber-700 rounded text-sm">
-            <strong>Note:</strong> The diary service appears to be offline.
-            Start it with:
-            <code className="block mt-1 p-1 bg-gray-100 rounded font-mono text-xs">
-              cd ../../../apps/diary-service && pnpm dev
-            </code>
+          <div className="mt-4 p-2 bg-amber-50 text-amber-700 rounded text-sm w-full">
+            <div className="flex items-center gap-1 font-medium">
+              <AlertCircle className="h-4 w-4" />
+              <span>Diary service offline</span>
+            </div>
+            <p className="text-xs mt-1">
+              Start it with:
+              <code className="block mt-1 p-1 bg-background rounded font-mono text-xs border">
+                cd ../../../apps/diary-service && pnpm dev
+              </code>
+            </p>
           </div>
         )}
-      </CardContent>
+      </CardFooter>
     </Card>
   );
 }

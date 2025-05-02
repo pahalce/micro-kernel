@@ -1,10 +1,10 @@
 {
-  "extends": "@shared/tsconfig-base/tsconfig.json",
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@shared/tsconfig-base/tsconfig.lib.json",
   "compilerOptions": {
+    "target": "es2020",
     "rootDir": "src",
-    "outDir": "dist",
-    "declaration": true,
-    "composite": true
+    "outDir": "dist"
   },
   "include": ["src"]
 }

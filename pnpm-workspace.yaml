@@ -1,4 +1,5 @@
 packages:
   - 'architectures/*/packages/**'
   - 'architectures/*/demos/**'
-  - 'shared/**' 
+  - 'architectures/*/apps/**'
+  - 'shared/**'

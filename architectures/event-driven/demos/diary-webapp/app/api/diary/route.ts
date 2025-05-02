@@ -9,7 +9,7 @@ export const runtime = "nodejs"; // Edge でなく Node runtime を明示
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function GET(_req: NextRequest) {
-  const consumer = kafka.consumer({ groupId: `web-${Date.now()}` });
+  const consumer = kafka.consumer({ groupId: "web-diary" });
   await consumer.connect();
   await consumer.subscribe({
     topic: Topics.ScoreComputed,

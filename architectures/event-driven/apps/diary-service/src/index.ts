@@ -41,7 +41,7 @@ app.post("/diaries", async (c) => {
   return c.json({ id: payload.diaryId }, 201);
 });
 
-// Node.js でリッスン（既定ポート 3000）
-serve(app, (info) => {
+// Node.js でリッスン (ポート8000)
+serve({ port: 8000, fetch: app.fetch }, (info) => {
   console.log(`DiaryService 🚀  http://localhost:${info.port}`);
 });

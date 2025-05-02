@@ -1,0 +1,25 @@
+{
+  "name": "@event-driven/score-service",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts --port 3000",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "clean": "rm -rf dist node_modules"
+  },
+  "dependencies": {
+    "@event-driven/events": "workspace:*",
+    "@event-driven/kafka": "workspace:*",
+    "hono": "^4.7.8",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@shared/tsconfig-base": "workspace:*",
+    "@types/node": "^22.15.3",
+    "tsx": "^4.7.0",
+    "typescript": "^5.4.3"
+  }
+}

@@ -4,6 +4,7 @@ globs:
 alwaysApply: true
 ---
 
+This docs is rules for architectures/event-driven/demo/diary-webapp project
 
 ## Rules for using components
 
